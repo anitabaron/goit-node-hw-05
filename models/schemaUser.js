@@ -24,7 +24,10 @@ const userSchema = new Schema(
       default: null,
     },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: true },
+  {
+    avatarURL: String,
+  }
 );
 // gdy user będzie się rejestrował, kodowanie
 userSchema.methods.setPassword = async function (password) {
