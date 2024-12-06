@@ -3,6 +3,9 @@ const User = require("../../models/schemaUser");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const auth = require("../../auth/auth");
+const gravatar = require("gravatar");
+const { updateAvatar } = require("../../avatars/avatars");
+const { uploadAvatar } = require("../../avatars/multer");
 
 const secret = process.env.AUTH_SECRET;
 
@@ -16,12 +19,15 @@ router.post("/signup", async (req, res, next) => {
   }
 
   try {
-    const newUser = new User({ email });
+    const newUser = new User({
+      email,
+      avatarURL: gravatar.url(email, { s: "200", r: "pg", d: "retro" }),
+    });
     await newUser.setPassword(password);
     await newUser.save();
-    return res
-      .status(201)
-      .json({ message: `Registration succesful: user ${email}` });
+    return res.status(201).json({
+      message: `Registration succesful: user ${email}, avatar ${newUser.avatarURL}`,
+    });
   } catch (error) {
     next(error);
   }
@@ -58,8 +64,7 @@ router.post("/login", async (req, res, next) => {
 
 router.get("/logout", auth, async (req, res, next) => {
   try {
-    const user = req.user;
-
+    const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(401).json({ message: "User not authorized!" });
     }
@@ -74,8 +79,7 @@ router.get("/logout", auth, async (req, res, next) => {
 
 router.get("/current", auth, async (req, res, next) => {
   try {
-    const user = req.user;
-    // const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(401).json({ message: "User not authorized!" });
     }
@@ -86,5 +90,16 @@ router.get("/current", auth, async (req, res, next) => {
     next(error);
   }
 });
+
+router.patch(
+  "/avatars",
+  uploadAvatar.single("avatar"),
+  (req, res, next) => {
+    console.log("File received:", req.file);
+    console.log("Body data:", req.body);
+    next();
+  },
+  updateAvatar
+);
 
 module.exports = router;

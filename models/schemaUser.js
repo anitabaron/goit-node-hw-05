@@ -23,12 +23,13 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+    avatarURL: {
+      type: String,
+    },
   },
-  { versionKey: false, timestamps: true },
-  {
-    avatarURL: String,
-  }
+  { versionKey: false, timestamps: true }
 );
+
 // gdy user będzie się rejestrował, kodowanie
 userSchema.methods.setPassword = async function (password) {
   this.password = await bCrypt.hash(password, 10);

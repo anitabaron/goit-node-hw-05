@@ -3,6 +3,7 @@ const logger = require("morgan");
 const cors = require("cors");
 const connectDB = require("./db");
 const passport = require("passport");
+const path = require("path");
 require("./config/config-password");
 
 const app = express();
@@ -21,6 +22,8 @@ app.use("/api/users", usersRouter);
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 app.use(logger(formatsLogger));
+
+app.use("/avatars", express.static(path.join(__dirname, "public/avatars")));
 
 app.use((req, res) => {
   res.status(404).json({ message: `Not found - ${req.path}` });
