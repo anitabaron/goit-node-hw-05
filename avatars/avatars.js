@@ -5,16 +5,37 @@ const User = require("../models/schemaUser");
 const { isImageAndTransform } = require("./avatarPath");
 
 const updateAvatar = async (req, res, next) => {
-  if (!req.file) {
-    return res.status(400).json({ message: "No file uploaded" });
-  }
-
-  const { path: temporaryPath } = req.file;
-  const extension = path.extname(temporaryPath);
-  const fileName = `${uuidV4()}${extension}`;
-  const filePath = path.join(process.cwd(), "public/avatars", fileName);
-
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+    // const tempPath = req.file.path;
+    // const outputDir = path.join(process.cwd(), "public/avatars");
+    // const extension = path.extname(tempPath);
+    // const outputFileName = `${uuidV4()}${extension}`;
+    // const outputPath = path.join(outputDir, outputFileName);
+    const { path: temporaryPath } = req.file;
+    const extension = path.extname(temporaryPath);
+    const fileName = `${uuidV4()}${extension}`;
+    const filePath = path.join(process.cwd(), "public/avatars", fileName);
+
+    //   if (!fs.existsSync(outputDir)) {
+    //     fs.mkdirSync(outputDir);
+    //   }
+    //   const image = await Jimp.read(tempPath);
+    //   image.resize(250, 250);
+    //   await image.writeAsync(outputPath);
+    //   await fs.unlink(tempPath);
+
+    //   res.status(200).json({
+    //     message: "Avatar updated successfully",
+    //     avatarURL: `/avatars/${outputFileName}`,
+    //   });
+    // } catch (error) {
+    //   console.error("Error processing file:", error.message);
+    //   next(error);
+    // }
+
     const isValidAndTransform = await isImageAndTransform(
       temporaryPath,
       filePath

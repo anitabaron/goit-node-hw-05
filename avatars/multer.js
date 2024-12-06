@@ -3,7 +3,7 @@ const path = require("path");
 const { v4: uuidV4 } = require("uuid");
 
 const tempDir = path.join(process.cwd(), "temp");
-const storeImageDir = path.join(process.cwd(), "public/avatars");
+// const storeImageDir = path.join(process.cwd(), "public/avatars");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
