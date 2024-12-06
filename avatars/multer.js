@@ -1,15 +1,20 @@
 const multer = require("multer");
 const path = require("path");
+const { v4: uuidV4 } = require("uuid");
 
-const tempDir = path.join(__dirname, "../temp");
+const tempDir = path.join(process.cwd(), "temp");
+const storeImageDir = path.join(process.cwd(), "public/avatars");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, tempDir);
   },
   filename: (req, file, cb) => {
-    const uniqueName = `${Date.now()}-${file.originalname}`;
+    const uniqueName = `${uuidV4()}${path.extname(file.originalname)}`;
     cb(null, uniqueName);
+  },
+  limits: {
+    fileSize: 1048576,
   },
 });
 
