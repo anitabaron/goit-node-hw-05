@@ -2,10 +2,12 @@ const express = require("express");
 const User = require("../../models/schemaUser");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const auth = require("../../auth/auth");
+const auth = require("../../middleware/auth");
 const gravatar = require("gravatar");
-const { updateAvatar } = require("../../avatars/avatars");
-const { uploadAvatar } = require("../../avatars/multer");
+const { processImage } = require("../../avatars/avatars");
+const {
+  uploadAvatarMiddleware,
+} = require("../../middleware/uploadAvatar-multer");
 
 const secret = process.env.AUTH_SECRET;
 
@@ -93,13 +95,13 @@ router.get("/current", auth, async (req, res, next) => {
 
 router.patch(
   "/avatars",
-  uploadAvatar.single("avatar"),
+  uploadAvatarMiddleware.single("avatar"),
   (req, res, next) => {
     console.log("File received:", req.file);
     console.log("Body data:", req.body);
     next();
   },
-  updateAvatar
+  processImage
 );
 
 module.exports = router;

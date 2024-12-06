@@ -30,11 +30,10 @@ const userSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-// gdy user będzie się rejestrował, kodowanie
 userSchema.methods.setPassword = async function (password) {
   this.password = await bCrypt.hash(password, 10);
 };
-// gdy user będzie się logował, porównanie
+
 userSchema.methods.validatePassword = async function (password) {
   return await bCrypt.compare(password, this.password);
 };

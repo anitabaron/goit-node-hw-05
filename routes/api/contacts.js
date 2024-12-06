@@ -6,7 +6,7 @@ const {
   updateContact,
   removeContact,
 } = require("../../service/contactService");
-const auth = require("../../auth/auth");
+const auth = require("../../middleware/auth");
 require("dotenv").config();
 
 const router = express.Router();

@@ -1,17 +1,13 @@
 const Jimp = require("jimp");
 
-const isImageAndTransform = async (inputPath, outputPath) => {
+const isImageAndTransform = async (filePath) => {
   try {
-    console.log("Processing image...");
-    const image = await Jimp.read(inputPath); // Wczytanie obrazu
-    image.resize(250, 250); // Zmiana rozmiaru
-    await image.writeAsync(outputPath); // Zapisanie przetworzonego obrazu
-
-    console.log("Input path:", inputPath);
-    console.log("Output path:", outputPath);
+    const image = await Jimp.read(filePath);
+    await image.resize(250, 250);
+    await image.write(filePath);
     return true;
   } catch (error) {
-    console.error("Error processing image:", error.message);
+    console.error("Error processing image:", error);
     return false;
   }
 };
