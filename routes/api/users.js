@@ -97,8 +97,7 @@ router.patch(
   "/avatars",
   uploadAvatarMiddleware.single("avatar"),
   (req, res, next) => {
-    console.log("File received:", req.file);
-    console.log("Body data:", req.body);
+    // console.log("File received:", req.file);
     next();
   },
   processImage

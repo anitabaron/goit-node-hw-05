@@ -27,8 +27,6 @@ const processImage = async (req, res, next) => {
     return next(error);
   }
 
-  console.log("filePath", filePath);
-
   const isValidAndTransform = await isImageAndTransform(filePath);
   if (!isValidAndTransform) {
     await fs.unlink(filePath);
