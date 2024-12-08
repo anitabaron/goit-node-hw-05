@@ -95,6 +95,7 @@ router.get("/current", auth, async (req, res, next) => {
 
 router.patch(
   "/avatars",
+  auth,
   uploadAvatarMiddleware.single("avatar"),
   (req, res, next) => {
     // console.log("File received:", req.file);
