@@ -1,5 +1,5 @@
 ## GoIT Node.js course
 
-Homework 04
+Homework 05
 
-# Authentication / authorization
+# Avatars / unit tests
